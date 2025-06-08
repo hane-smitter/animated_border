@@ -1,0 +1,96 @@
+@layer general-styling {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (prefers-color-scheme: light) {
+    body {
+      --site-bg: #f2f2f2f2;
+      --site-text: #333;
+
+      color: var(--site-text);
+      background-color: var(--site-bg);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      --site-bg: #333;
+      --site-text: #f2f2f2f2;
+
+      color: var(--site-text);
+      background-color: var(--site-bg);
+    }
+  }
+
+  :root {
+    font-family: Arial, Helvetica, sans-serif;
+    color-scheme: light dark;
+  }
+  body {
+    overflow-x: clip;
+  }
+}
+
+@property --glow-deg {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: -90deg;
+}
+
+@layer animations {
+  @keyframes glow {
+    0% {
+      --glow-deg: -90deg;
+    }
+    100% {
+      --glow-deg: 270deg;
+    }
+  }
+}
+
+.glowing-border {
+  --gradient-glow: yellow, green, blue, purple, red, yellow;
+  --glow-intensity: 0.105;
+  --glow-size: 1rem;
+
+  margin-block: 3rem;
+  padding: 8rem 3rem;
+  max-width: 60ch;
+
+  border-radius: 0 100vh 100vh 0;
+  border: var(--border-width, 3px) solid transparent;
+  background: linear-gradient(0deg, var(--site-bg, Canvas) 0 0) padding-box,
+    conic-gradient(from var(--glow-deg), var(--gradient-glow)) border-box;
+  border-left: 0;
+  position: relative;
+  z-index: 0;
+  animation: glow 8s infinite linear;
+}
+
+.glowing-border::before,
+.glowing-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.glowing-border::before {
+  background: var(--site-bg, Canvas);
+  inset: 1rem;
+  filter: blur(var(--glow-size, 1rem));
+  scale: 1.2 1;
+  transform-origin: right;
+}
+
+.glowing-border::after {
+  background: conic-gradient(from var(--glow-deg), var(--gradient-glow)) border-box;
+  inset: -1.5rem;
+  filter: blur(var(--glow-size, 1rem));
+  opacity: var(--glow-intensity, 0.125);
+  z-index: -2;;
+}
