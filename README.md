@@ -1,2 +1,3 @@
-# animated_border
-Animated gradinent border using CSS
+# animated border
+
+Gradient border with animation using CSS
